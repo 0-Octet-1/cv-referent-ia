@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  cv-gregory-leterte:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cv-gregory-leterte
+    ports:
+      - "8080:80"
+    restart: unless-stopped

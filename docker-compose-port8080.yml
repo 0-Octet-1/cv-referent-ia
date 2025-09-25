@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  cv-gregory-leterte:
+    build: .
+    container_name: cv-gregory-leterte
+    ports:
+      - "8080:80"  # Port externe 8080 -> Port interne 80
+    restart: unless-stopped

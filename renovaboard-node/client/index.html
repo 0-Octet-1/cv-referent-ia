@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RenovaBoard - Gestion de Rénovation</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <!-- Scripts -->
+    <script src="assets/js/app.js"></script>
+</head>
+<body>
+    <!-- Overlay de connexion -->
+    <div id="login-overlay" class="login-overlay">
+        <div class="login-container">
+            <h2>RenovaBoard</h2>
+            <p>Gestion de projets de rénovation</p>
+            
+            <div class="login-form">
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" placeholder="Entrez le mot de passe">
+                </div>
+                <div class="form-group">
+                    <button id="login-button" class="btn btn-primary">Se connecter</button>
+                </div>
+                <div id="login-error" class="error-message" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Application principale (s'affiche après connexion) -->
+    <div id="app-container" style="display: none;">
+        <header class="app-header">
+            <h1>RenovaBoard</h1>
+            <nav>
+                <ul class="nav-tabs">
+                    <li class="nav-tab active" data-view="dashboard">Tableau de bord</li>
+                    <li class="nav-tab" data-view="rooms">Pièces</li>
+                    <li class="nav-tab" data-view="settings">Paramètres</li>
+                </ul>
+                <button id="logout-button" class="btn btn-outline">Déconnexion</button>
+            </nav>
+        </header>
+        
+        <main>
+            <!-- Vue Tableau de Bord -->
+            <div id="dashboard-view" class="view">
+                <h2>Tableau de Bord</h2>
+                <div class="dashboard-statistics">
+                    <div class="card">
+                        <h3>Budget total</h3>
+                        <p id="total-budget" class="big-number">0 €</p>
+                    </div>
+                    <div class="card">
+                        <h3>Nombre de pièces</h3>
+                        <p id="room-count" class="big-number">0</p>
+                    </div>
+                    <div class="card">
+                        <h3>Éléments</h3>
+                        <p id="element-count" class="big-number">0</p>
+                    </div>
+                </div>
+                
+                <div class="dashboard-status">
+                    <h3>État d'avancement</h3>
+                    <div id="status-chart" class="chart-container"></div>
+                </div>
+                
+                <div class="dashboard-recent">
+                    <h3>Pièces récentes</h3>
+                    <div id="recent-rooms-list" class="list-container">
+                        <p class="empty-message">Aucune pièce n'a été ajoutée.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vue Pièces -->
+            <div id="rooms-view" class="view" style="display: none;">
+                <div class="rooms-header">
+                    <h2>Pièces</h2>
+                    <button id="add-room-btn" class="btn btn-primary">Ajouter une pièce</button>
+                </div>
+                
+                <div class="rooms-container">
+                    <div id="rooms-list" class="rooms-list">
+                        <p class="empty-message">Aucune pièce n'a été ajoutée.</p>
+                    </div>
+                    
+                    <div id="room-details" class="room-details">
+                        <div class="empty-state">
+                            <p>Sélectionnez une pièce pour voir les détails</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vue Paramètres -->
+            <div id="settings-view" class="view" style="display: none;">
+                <h2>Paramètres</h2>
+                
+                <div class="settings-section">
+                    <h3>Mot de passe</h3>
+                    <form id="password-form">
+                        <div class="form-group">
+                            <label for="current-password">Mot de passe actuel</label>
+                            <input type="password" id="current-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-password">Nouveau mot de passe</label>
+                            <input type="password" id="new-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-password">Confirmer le mot de passe</label>
+                            <input type="password" id="confirm-password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Modifier le mot de passe</button>
+                    </form>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Listes personnalisées</h3>
+                    
+                    <div class="settings-lists">
+                        <div class="settings-list">
+                            <h4>Types de pièces</h4>
+                            <div id="types-list" class="editable-list"></div>
+                            <div class="list-actions">
+                                <input type="text" id="new-type" placeholder="Nouveau type...">
+                                <button id="add-type-btn" class="btn btn-outline">Ajouter</button>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-list">
+                            <h4>Statuts</h4>
+                            <div id="statuts-list" class="editable-list"></div>
+                            <div class="list-actions">
+                                <input type="text" id="new-statut" placeholder="Nouveau statut...">
+                                <button id="add-statut-btn" class="btn btn-outline">Ajouter</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="save-lists-btn" class="btn btn-primary">Enregistrer les modifications</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modèles de modales -->
+    <div class="modal-templates" style="display: none;">
+        <!-- Modèle de modale pour ajouter/modifier une pièce -->
+        <div id="room-modal-template">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3>Ajouter une pièce</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="room-form">
+                        <div class="form-group">
+                            <label for="room-name">Nom de la pièce</label>
+                            <input type="text" id="room-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="room-type">Type</label>
+                            <select id="room-type" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="room-status">Statut</label>
+                            <select id="room-status" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="room-budget">Budget (€)</label>
+                            <input type="number" id="room-budget" min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label for="room-notes">Notes</label>
+                            <textarea id="room-notes"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline cancel-modal">Annuler</button>
+                    <button class="btn btn-primary save-room">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modèle de modale pour ajouter/modifier un élément -->
+        <div id="element-modal-template">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3>Ajouter un élément</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="element-form">
+                        <div class="form-group">
+                            <label for="element-name">Nom de l'élément</label>
+                            <input type="text" id="element-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="element-type">Type</label>
+                            <select id="element-type" required>
+                                <option value="meuble">Meuble</option>
+                                <option value="appareil">Appareil électroménager</option>
+                                <option value="decoration">Décoration</option>
+                                <option value="materiau">Matériau</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="element-status">Statut</label>
+                            <select id="element-status" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="element-price">Prix (€)</label>
+                            <input type="number" id="element-price" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="element-quantity">Quantité</label>
+                            <input type="number" id="element-quantity" min="1" value="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="element-file">Image ou document</label>
+                            <input type="file" id="element-file">
+                        </div>
+                        <div id="element-file-preview" class="file-preview"></div>
+                        <div class="form-group">
+                            <label for="element-notes">Notes</label>
+                            <textarea id="element-notes"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline cancel-modal">Annuler</button>
+                    <button class="btn btn-primary save-element">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modèle de fenêtre de confirmation -->
+        <div id="confirm-modal-template">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3>Confirmation</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p class="confirm-message"></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline cancel-confirm">Annuler</button>
+                    <button class="btn btn-danger confirm-action">Confirmer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modèle de notification -->
+    <div id="notification-container" class="notification-container"></div>
+</body>
+</html>

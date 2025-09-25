@@ -1,0 +1,18 @@
+{
+  "password": "$2b$10$LMwxkvnCRxCXRH6T0s76DOBLX9xZgMyq9/wGexoXX3Go5i9Vm7Jte",
+  "types": [
+    "Salon",
+    "Cuisine",
+    "Chambre",
+    "Salle de bain",
+    "Toilettes",
+    "Bureau"
+  ],
+  "statuts": [
+    "À faire",
+    "En cours",
+    "Terminé",
+    "Annulé",
+    "En attente"
+  ]
+}

@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  cv-gregory-leterte:
+    build: .
+    container_name: cv-gregory-leterte
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    
+    # Labels essentiels pour Portainer
+    labels:
+      # Informations générales
+      - "com.docker.compose.project=cv-gregory-leterte"
+      
+      # Métadonnées du projet
+      - "project.name=CV Gregory Le Terte"
+      - "project.description=Site CV professionnel - Expert IA & Consultant"
+      - "project.version=1.0.0"
+      - "project.maintainer=gregory.leterte@gmail.com"
+      
+      # Tags pour organisation dans Portainer
+      - "environment=production"
+      - "type=website"
+      - "framework=static"
+      - "webserver=nginx"
+    
+    # Variables d'environnement
+    environment:
+      - TZ=Europe/Paris

@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  cv-gregory-leterte:
+    build: .
+    container_name: cv-gregory-leterte
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    
+    # Labels pour Portainer distant
+    labels:
+      # Informations générales
+      - "com.docker.compose.project=cv-gregory-leterte"
+      
+      # Métadonnées du projet
+      - "project.name=CV Gregory Le Terte"
+      - "project.description=Site CV professionnel - Expert IA & Consultant"
+      - "project.version=1.0.0"
+      - "project.maintainer=gregory.leterte@gmail.com"
+      - "project.url=http://IP-SERVEUR:8080"
+      
+      # Tags pour organisation dans Portainer
+      - "environment=production"
+      - "type=website"
+      - "framework=static"
+      - "webserver=nginx"
+      - "deployment=remote"
+      
+      # Configuration réseau
+      - "network.access=public"
+      - "network.port=8080"
+    
+    # Variables d'environnement pour serveur distant
+    environment:
+      - TZ=Europe/Paris
+      - NGINX_HOST=0.0.0.0
+      - SERVER_NAME=_
+    
+    # Configuration réseau pour accès distant
+    networks:
+      - default
+    
+    # Health check adapté pour serveur distant
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+# Réseau par défaut (bridge) pour accès externe
+networks:
+  default:
+    driver: bridge
