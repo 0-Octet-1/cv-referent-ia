@@ -21,8 +21,12 @@ if [ $? -eq 0 ]; then
     
     # Remplacer les fichiers
     echo "🔄 Remplacement des fichiers..."
-    rm -rf !(cv-referent-ia-master|update.zip) 2>/dev/null || true
-    mv cv-referent-ia-master/* .
+    # Supprimer tous les fichiers sauf le dossier téléchargé et le zip
+    find . -maxdepth 1 -type f -not -name "update.zip" -delete 2>/dev/null || true
+    find . -maxdepth 1 -type d -not -name "." -not -name ".." -not -name "cv-referent-ia-master" -exec rm -rf {} + 2>/dev/null || true
+    
+    # Déplacer les nouveaux fichiers
+    mv cv-referent-ia-master/* . 2>/dev/null || true
     mv cv-referent-ia-master/.* . 2>/dev/null || true
     
     # Nettoyer
