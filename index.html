@@ -77,12 +77,37 @@
                             </div>
                         </div>
                         
-                        <!-- Champ effet Bot -->
+                        <!-- Chatbot interactif -->
                         <div class="bot-field">
-                            <div class="bot-indicator">
+                            <div class="bot-indicator" onclick="toggleChatbot()">
                                 <span class="bot-label">BOT</span>
                                 <div class="bot-status">
                                     <div class="bot-pulse"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Interface du chatbot -->
+                            <div id="chatbot-interface" class="chatbot-interface">
+                                <div class="chatbot-header">
+                                    <div class="bot-avatar">🤖</div>
+                                    <span>Assistant IA de Grégory</span>
+                                    <button class="chatbot-close" onclick="toggleChatbot()">×</button>
+                                </div>
+                                
+                                <div class="chatbot-messages" id="chatbot-messages">
+                                    <div class="bot-message">
+                                        <div class="message-content">
+                                            👋 Salut ! Je peux répondre à tes questions sur Grégory. Essaie :
+                                            <br>• "Quelle est ton expérience ?"
+                                            <br>• "Quelles technologies ?"
+                                            <br>• "Tes projets ?"
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="chatbot-input">
+                                    <input type="text" id="chatbot-question" placeholder="Pose ta question..." onkeypress="handleChatbotEnter(event)">
+                                    <button onclick="askChatbot()">Envoyer</button>
                                 </div>
                             </div>
                         </div>
@@ -604,6 +629,7 @@
 
     <script src="js/particles.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/chatbot.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="js/contact.js"></script>
 </body>
