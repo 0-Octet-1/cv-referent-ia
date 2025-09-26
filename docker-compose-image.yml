@@ -1,9 +1,0 @@
-version: '3.8'
-
-services:
-  cv-gregory-leterte:
-    image: cv-gregory-leterte:latest  # Image locale (ne marche que si déjà sur le serveur)
-    container_name: cv-gregory-leterte
-    ports:
-      - "8081:80"
-    restart: unless-stopped
