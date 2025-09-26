@@ -14,11 +14,11 @@ const defaultAIExplanations = {
 
 // Messages IA contextuels selon la section
 const contextualMessages = {
-    'accueil': "Grégory Le Terte : plus 20 ans d'expérience en développement, aujourd'hui Référent IA chez Techna. Il développe des solutions d'intelligence artificielle éthiques pour l'optimisation nutritionnelle.",
-    'parcours': "Parcours évolutif : de l'analyse programmeur (2002) au Référent IA (2023). Expertise Windev depuis 16 ans, transition vers Python/React et spécialisation IA éthique.",
-    'competences': "Stack technique : Expert Windev/Webdev, Python/Django, JavaScript/React. Spécialisé en IA responsable, EDI, gestion commerciale et synthèse vocale innovante.",
-    'realisations': "Projets marquants : Outils IA nutritionnels chez Techna, plateforme WEFEED, système de gestion commerciale complet, innovation synthèse vocale pour le picking.",
-    'contact': "Référent IA disponible pour vos projets d'intelligence artificielle éthique et solutions de développement innovantes. Expert en transition technologique."
+    'accueil': "🤖 Bonjour ! Je suis l'assistant IA de Grégory. Il a 20+ ans d'expérience en développement et est aujourd'hui Référent IA chez Techna, spécialisé en solutions d'IA éthiques.",
+    'parcours': "📈 Parcours impressionnant ! Grégory a évolué d'analyse programmeur (2002) à Référent IA (2023). Expert Windev depuis 16 ans, il maîtrise maintenant Python/React et l'IA éthique.",
+    'competences': "💻 Stack technique solide : Expert Windev/Webdev, Python/Django, JavaScript/React. Spécialisé en IA responsable, EDI, gestion commerciale et synthèse vocale innovante.",
+    'realisations': "🚀 Projets concrets : Outils IA nutritionnels chez Techna, plateforme WEFEED, système de gestion commerciale complet, innovation synthèse vocale pour le picking.",
+    'contact': "📞 Contactez Grégory pour vos projets d'IA éthique ! Expert en développement et transformation numérique, il saura vous accompagner dans vos innovations."
 };
 
 // Variables globales
@@ -28,6 +28,20 @@ let isCurrentlyTyping = false;
 let aiAssistant;
 let aiTooltip;
 let aiTooltipText;
+
+// Fonction throttle pour optimiser le scroll
+function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    }
+}
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', function() {
@@ -148,24 +162,19 @@ function setupSectionObserver() {
                 }
                 return;
             }
-        }
     }
     
     // Écouter le scroll avec throttling
     let scrollTimeout;
-    window.addEventListener('scroll', () => {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(detectActiveSection, 100);
-    });
+    window.addEventListener('scroll', throttle(detectActiveSection, 100));
     
     // Détecter la section initiale
-    detectActiveSection();
+    setTimeout(detectActiveSection, 500);
 }
 
 // Mettre à jour le message contextuel selon la section
 function updateContextualMessage(sectionId) {
     const message = contextualMessages[sectionId];
-    if (message) {
         // Mettre à jour le message par défaut de l'assistant
         setTimeout(() => {
             if (!aiTooltip.classList.contains('show')) {
