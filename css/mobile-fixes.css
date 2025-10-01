@@ -1,0 +1,94 @@
+/* ==========================================
+   CORRECTIONS MOBILES POUR HEADER ET PHOTO
+   ========================================== */
+
+/* Téléphones mobiles - Header NON FIXE */
+@media screen and (max-width: 480px) {
+    /* Header mobile - PAS FIXE pour éviter les problèmes */
+    header {
+        position: relative !important;
+        background: rgba(26, 26, 26, 0.95) !important;
+        backdrop-filter: blur(10px) !important;
+        box-shadow: var(--box-shadow) !important;
+        border-bottom: 1px solid rgba(212, 165, 116, 0.3) !important;
+    }
+
+    /* Navigation centrée et visible */
+    nav {
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    .nav-links {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+
+    .nav-links a {
+        display: inline-block !important;
+        padding: 6px 12px !important;
+        font-size: 0.9rem !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+    }
+
+    /* Hero section - pas de margin négatif */
+    .hero {
+        margin-top: 0 !important;
+        padding-top: 2rem !important;
+        min-height: 85vh !important;
+    }
+
+    /* Photo visible sur mobile */
+    #profile-photo {
+        width: 140px !important;
+        height: 185px !important;
+        margin: 1rem auto 0 !important;
+        display: block !important;
+    }
+
+    /* Texte mobile optimisé */
+    .hero-text h1 {
+        font-size: 1.9rem !important;
+        line-height: 1.2 !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .hero-text h2 {
+        font-size: 1rem !important;
+        margin-bottom: 0.8rem !important;
+    }
+
+    .hero-text h2.highlight {
+        font-size: 1.4rem !important;
+    }
+
+    /* Éviter le zoom sur iOS */
+    input, textarea {
+        font-size: 16px !important;
+    }
+}
+
+/* Tablettes */
+@media screen and (max-width: 768px) {
+    .hero-content {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: var(--spacing-lg) !important;
+    }
+
+    .hero-text {
+        padding-right: 0 !important;
+        min-width: auto !important;
+    }
+
+    #profile-photo {
+        width: 180px !important;
+        height: 240px !important;
+        margin: 0 auto !important;
+    }
+}
